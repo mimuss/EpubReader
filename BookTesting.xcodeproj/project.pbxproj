@@ -9,19 +9,21 @@
 /* Begin PBXBuildFile section */
 		11063F3A1EB7CE6100D5ACFD /* EpubParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11063F391EB7CE6100D5ACFD /* EpubParser.swift */; };
 		11063F3C1EB7E6DE00D5ACFD /* EBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11063F3B1EB7E6DE00D5ACFD /* EBook.swift */; };
+		1106A5711EB8D10D0042D5FB /* Tolstoy.epub in Resources */ = {isa = PBXBuildFile; fileRef = 1106A56F1EB8D10D0042D5FB /* Tolstoy.epub */; };
+		1106A5721EB8D10D0042D5FB /* TolstoyZup.zip in Resources */ = {isa = PBXBuildFile; fileRef = 1106A5701EB8D10D0042D5FB /* TolstoyZup.zip */; };
 		11F4A5BA1EB668980059570C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F4A5B91EB668980059570C /* AppDelegate.swift */; };
 		11F4A5BC1EB668980059570C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F4A5BB1EB668980059570C /* ViewController.swift */; };
 		11F4A5BF1EB668980059570C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11F4A5BD1EB668980059570C /* Main.storyboard */; };
 		11F4A5C11EB668980059570C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11F4A5C01EB668980059570C /* Assets.xcassets */; };
 		11F4A5C41EB668980059570C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11F4A5C21EB668980059570C /* LaunchScreen.storyboard */; };
-		11F4A5CD1EB66B970059570C /* Tolstoy.epub in Resources */ = {isa = PBXBuildFile; fileRef = 11F4A5CC1EB66B780059570C /* Tolstoy.epub */; };
-		11F4A5CF1EB6731C0059570C /* TolstoyZup.zip in Resources */ = {isa = PBXBuildFile; fileRef = 11F4A5CE1EB6731C0059570C /* TolstoyZup.zip */; };
 		A15778FD0194B4020F35F77E /* Pods_BookTesting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE7FBCE411EDCDBA1942DEF /* Pods_BookTesting.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		11063F391EB7CE6100D5ACFD /* EpubParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpubParser.swift; sourceTree = "<group>"; };
 		11063F3B1EB7E6DE00D5ACFD /* EBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EBook.swift; sourceTree = "<group>"; };
+		1106A56F1EB8D10D0042D5FB /* Tolstoy.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tolstoy.epub; sourceTree = "<group>"; };
+		1106A5701EB8D10D0042D5FB /* TolstoyZup.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = TolstoyZup.zip; sourceTree = "<group>"; };
 		11F4A5B61EB668980059570C /* BookTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11F4A5B91EB668980059570C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11F4A5BB1EB668980059570C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -29,8 +31,6 @@
 		11F4A5C01EB668980059570C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		11F4A5C31EB668980059570C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		11F4A5C51EB668980059570C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		11F4A5CC1EB66B780059570C /* Tolstoy.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tolstoy.epub; sourceTree = "<group>"; };
-		11F4A5CE1EB6731C0059570C /* TolstoyZup.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = TolstoyZup.zip; sourceTree = "<group>"; };
 		1BE7FBCE411EDCDBA1942DEF /* Pods_BookTesting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BookTesting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E222F34D250F2D3D93AE564 /* Pods-BookTesting.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BookTesting.release.xcconfig"; path = "Pods/Target Support Files/Pods-BookTesting/Pods-BookTesting.release.xcconfig"; sourceTree = "<group>"; };
 		AEFC9C195088B460A8E89B4C /* Pods-BookTesting.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BookTesting.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BookTesting/Pods-BookTesting.debug.xcconfig"; sourceTree = "<group>"; };
@@ -48,6 +48,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1106A56E1EB8D10D0042D5FB /* Books */ = {
+			isa = PBXGroup;
+			children = (
+				1106A56F1EB8D10D0042D5FB /* Tolstoy.epub */,
+				1106A5701EB8D10D0042D5FB /* TolstoyZup.zip */,
+			);
+			path = Books;
+			sourceTree = SOURCE_ROOT;
+		};
 		11F4A5AD1EB668970059570C = {
 			isa = PBXGroup;
 			children = (
@@ -69,10 +78,9 @@
 		11F4A5B81EB668980059570C /* BookTesting */ = {
 			isa = PBXGroup;
 			children = (
+				1106A56E1EB8D10D0042D5FB /* Books */,
 				11063F3B1EB7E6DE00D5ACFD /* EBook.swift */,
 				11063F391EB7CE6100D5ACFD /* EpubParser.swift */,
-				11F4A5CE1EB6731C0059570C /* TolstoyZup.zip */,
-				11F4A5CC1EB66B780059570C /* Tolstoy.epub */,
 				11F4A5BB1EB668980059570C /* ViewController.swift */,
 				11F4A5BD1EB668980059570C /* Main.storyboard */,
 				11F4A5CB1EB668A30059570C /* Supporting Files */,
@@ -171,9 +179,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11F4A5CD1EB66B970059570C /* Tolstoy.epub in Resources */,
+				1106A5711EB8D10D0042D5FB /* Tolstoy.epub in Resources */,
 				11F4A5C41EB668980059570C /* LaunchScreen.storyboard in Resources */,
-				11F4A5CF1EB6731C0059570C /* TolstoyZup.zip in Resources */,
+				1106A5721EB8D10D0042D5FB /* TolstoyZup.zip in Resources */,
 				11F4A5C11EB668980059570C /* Assets.xcassets in Resources */,
 				11F4A5BF1EB668980059570C /* Main.storyboard in Resources */,
 			);
