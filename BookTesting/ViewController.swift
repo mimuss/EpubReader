@@ -12,10 +12,12 @@ import SWXMLHash
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var webVIew: UIWebView!
+    
     lazy var epubURL: URL = {
         var result = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
         result.appendPathComponent("Books")
-        result.appendPathComponent("TolstoyZip.zip")
+        result.appendPathComponent("TolstoyZip.epub")
         return result
     }()
     
@@ -26,11 +28,20 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(epubURL)
-        
-        if let book = try? EBook(epubURL: epubURL, unzipTo: unzipURL) {
-            print(book.manifest)
-            print(book.spine)
+        do {
+            let book = try EBook(epubURL: epubURL, unzipTo: unzipURL)
+            webVIew.loadHTMLString(book.spine(at: 0).string, baseURL: book.spine(at: 1).baseURL)
+        } catch let error as EbookError {
+            switch error {
+            case .couldNotUnzip:
+                print("Could not unzip")
+            case .wrongURLs:
+                print("Wrong urls")
+            case .wrongEpubFile(info: let info):
+                print(info)
+            }
+        } catch {
+            print(error)
         }
         
           

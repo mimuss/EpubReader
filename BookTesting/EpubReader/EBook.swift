@@ -27,6 +27,12 @@ class EBook {
         spine = try parser.spineFrom()
     }
     
+    func spine(at index: Int) -> (string: String, baseURL: URL) {
+        var contentURL = parser.contentURL
+        contentURL.appendPathComponent(manifest[spine[index]]!)
+        print(FileManager.default.fileExists(atPath: contentURL.path))
+        return (string: String(data: try! Data(contentsOf: contentURL), encoding: .utf8)!, baseURL: contentURL)
+    }
 }
 
 

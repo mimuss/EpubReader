@@ -18,21 +18,23 @@ enum EbookError: Error {
 
 class EpubParser {
     
-    let epubURL: URL
+    var epubURL: URL!
     let unzipURL: URL
-    private var fullPath: String!
-    private var fullPathURL: URL {
-        return unzipURL.appendingPathComponent(fullPath)
+    private var opfFileExtension: String!
+    var opfFileURL: URL {
+        return unzipURL.appendingPathComponent(opfFileExtension)
     }
-    
+    var contentURL: URL {
+        return opfFileURL.deletingLastPathComponent()
+    }
     
     init(epubURL: URL, unzipTo unzipURL: URL) throws {
         let fileManager = FileManager.default
-        self.epubURL = epubURL
         self.unzipURL = unzipURL
         if fileManager.fileExists(atPath: epubURL.path) && fileManager.fileExists(atPath: unzipURL.path) {
+            self.epubURL = try renameEpubToZip(from: epubURL)
             if SSZipArchive.unzipFile(atPath: epubURL.path, toDestination: unzipURL.path) {
-                fullPath = try getFullPath(from: unzipURL)
+                opfFileExtension = try getFullPath(from: unzipURL)
             } else {
                 throw EbookError.couldNotUnzip
             }
@@ -41,6 +43,23 @@ class EpubParser {
         }
     }
 
+    // because we cannot unzip file if extension does not correspond to .zip
+    private func renameEpubToZip(from epubURL: URL) throws -> URL {
+        let bookName = (epubURL.path as NSString).lastPathComponent
+        let bookExtension = (bookName as NSString).pathExtension
+        guard bookExtension == "epub" else {
+            throw EbookError.wrongEpubFile(info: "File does not have .epub extension")
+        }
+        var renamedBookURL = epubURL.deletingLastPathComponent()
+        renamedBookURL.appendPathComponent("\(bookName).zip")
+        do {
+            try FileManager.default.moveItem(at: epubURL, to: epubURL)
+            return renamedBookURL
+        } catch {
+            throw EbookError.wrongEpubFile(info: "could not rename epub file to zip (maybe file does not have .epub extension)")
+        }
+    }
+    
     private func getFullPath(from url: URL) throws -> String {
         var pathURl = url
         pathURl.appendPathComponent("META-INF")
@@ -66,7 +85,7 @@ class EpubParser {
     }
     
     func getManifest() throws -> Dictionary<String,String> {
-        guard let urlData = try? Data(contentsOf: fullPathURL) else {
+        guard let urlData = try? Data(contentsOf: opfFileURL) else {
             throw EbookError.wrongEpubFile(info: "Could not get manifest")
         }
         var result = Dictionary<String, String>()
@@ -80,7 +99,7 @@ class EpubParser {
     }
     
     func spineFrom() throws -> [String] {
-        guard let urlData = try? Data(contentsOf: fullPathURL) else {
+        guard let urlData = try? Data(contentsOf: opfFileURL) else {
             throw EbookError.wrongEpubFile(info: "Could not get spine")
         }
         var result: [String] = Array<String>()
