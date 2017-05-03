@@ -18,23 +18,34 @@ enum EbookError: Error {
 
 class EpubParser {
     
-    var epubURL: URL!
-    let unzipURL: URL
+    let epubURL: URL
+    var unzipURL: URL
+    var shouldDeleteUnzippedFiles: Bool
     private var opfFileExtension: String!
-    var opfFileURL: URL {
+    
+    private var opfFileURL: URL {
         return unzipURL.appendingPathComponent(opfFileExtension)
     }
     var contentURL: URL {
         return opfFileURL.deletingLastPathComponent()
     }
+    var bookName: String {
+        var epubFile = (epubURL.path as NSString).lastPathComponent
+        let range = epubFile.index(epubFile.endIndex, offsetBy: -5)..<epubFile.endIndex
+        epubFile.removeSubrange(range)
+        return epubFile
+    }
     
-    init(epubURL: URL, unzipTo unzipURL: URL) throws {
+    
+    init(epubURL: URL, unzipTo unzipURL: URL, deleteUnzippedFiles: Bool = true) throws {
         let fileManager = FileManager.default
         self.unzipURL = unzipURL
+        self.epubURL = epubURL
+        self.shouldDeleteUnzippedFiles = deleteUnzippedFiles
         if fileManager.fileExists(atPath: epubURL.path) && fileManager.fileExists(atPath: unzipURL.path) {
-            self.epubURL = try renameEpubToZip(from: epubURL)
-            if SSZipArchive.unzipFile(atPath: epubURL.path, toDestination: unzipURL.path) {
-                opfFileExtension = try getFullPath(from: unzipURL)
+            createNewFolderForUnzippedFiles()
+            if SSZipArchive.unzipFile(atPath: self.epubURL.path, toDestination: self.unzipURL.path) {
+                opfFileExtension = try getFullPath(from: self.unzipURL)
             } else {
                 throw EbookError.couldNotUnzip
             }
@@ -42,15 +53,38 @@ class EpubParser {
             throw EbookError.wrongURLs
         }
     }
-
+    
+    func createNewFolderForUnzippedFiles() {
+        let newFolderURL = unzipURL.appendingPathComponent(bookName)
+        print(newFolderURL)
+        try? FileManager.default.createDirectory(at: newFolderURL, withIntermediateDirectories: true, attributes: nil)
+        unzipURL = newFolderURL
+    }
+    
+    func deleteUnzippedFiles() throws {
+        guard shouldDeleteUnzippedFiles else { return }
+        try FileManager.default.removeItem(at: unzipURL)
+    }
+    
+    deinit {
+        do {
+            try deleteUnzippedFiles()
+        } catch {
+            print("Could not delete unzipped files: \(error)")
+        }
+        print("deinit")
+    }
+    
     // because we cannot unzip file if extension does not correspond to .zip
-    private func renameEpubToZip(from epubURL: URL) throws -> URL {
-        let bookName = (epubURL.path as NSString).lastPathComponent
-        let bookExtension = (bookName as NSString).pathExtension
-        guard bookExtension == "epub" else {
+    // don't need it, SSZipArchive can unzip .epub extension
+    /*private func renameEpubToZip(from epubURL: URL) throws -> URL {
+        var bookName = (epubURL.path as NSString).lastPathComponent
+        guard bookName.hasSuffix(".epub") else {
             throw EbookError.wrongEpubFile(info: "File does not have .epub extension")
         }
         var renamedBookURL = epubURL.deletingLastPathComponent()
+        let range = bookName.index(bookName.endIndex, offsetBy: -5)..<bookName.endIndex
+        bookName.removeSubrange(range)
         renamedBookURL.appendPathComponent("\(bookName).zip")
         do {
             try FileManager.default.moveItem(at: epubURL, to: epubURL)
@@ -58,7 +92,7 @@ class EpubParser {
         } catch {
             throw EbookError.wrongEpubFile(info: "could not rename epub file to zip (maybe file does not have .epub extension)")
         }
-    }
+    }*/
     
     private func getFullPath(from url: URL) throws -> String {
         var pathURl = url

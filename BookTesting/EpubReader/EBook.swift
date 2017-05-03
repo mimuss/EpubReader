@@ -14,23 +14,31 @@ class EBook {
     
     let epubURL: URL
     let unzipURL: URL
-    let parser: EpubParser
+    private let parser: EpubParser
     let manifest: [String:String]
     let spine: [String]
+    var shouldDeleteUnzippedFiles: Bool {
+        didSet {
+            parser.shouldDeleteUnzippedFiles = shouldDeleteUnzippedFiles
+        }
+    }
     
-    
-    init(epubURL: URL, unzipTo unzipURL: URL) throws {
+    init(epubURL: URL, unzipTo unzipURL: URL, deleteUnzippedFiles: Bool = true) throws {
+        parser = try EpubParser(epubURL: epubURL, unzipTo: unzipURL, deleteUnzippedFiles: deleteUnzippedFiles)
         self.epubURL = epubURL
         self.unzipURL = unzipURL
-        parser = try EpubParser(epubURL: epubURL, unzipTo: unzipURL)
+        self.shouldDeleteUnzippedFiles = deleteUnzippedFiles
         manifest = try parser.getManifest()
         spine = try parser.spineFrom()
+    }
+    
+    func deleteUnzippedFiles() throws {
+        try parser.deleteUnzippedFiles()
     }
     
     func spine(at index: Int) -> (string: String, baseURL: URL) {
         var contentURL = parser.contentURL
         contentURL.appendPathComponent(manifest[spine[index]]!)
-        print(FileManager.default.fileExists(atPath: contentURL.path))
         return (string: String(data: try! Data(contentsOf: contentURL), encoding: .utf8)!, baseURL: contentURL)
     }
 }
